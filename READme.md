@@ -19,7 +19,6 @@ Each user belongs to an organization and can:
 ### 1. Create and activate a virtual environment
 
 ```bash
-cd kudos_project/kudos_project
 python -m venv venv
 source venv/bin/activate
 ```
@@ -71,13 +70,13 @@ http://localhost:3000/
 #### User Login
 
 ```http
-  POST /api/auth/login/
+POST /api/auth/login/
 ```
 
 #### Get all users
 
 ```http
-  GET /api/users/
+GET /api/users/
 ```
 
 #### Get colleagues from same organization
