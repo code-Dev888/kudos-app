@@ -27,14 +27,15 @@ class Kudo(models.Model): #For single kudo given by 1 user to other
     created_at = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
-        if self.sender == self.receiver: #preventing from sending kudos to self
-            raise ValueError("User cannot sent kudos to themselves.")
-        
-        if self.sender.kudos_left <= 0: #check if user has kudos to give
-            raise ValueError(f"{self.sender.username} has no kudos left to give.")
-        
-        self.sender.kudos_left -= 1
-        self.sender.save()
+        if not getattr(self, "skip_kudos_validation", False):
+            if self.sender == self.receiver: #preventing from sending kudos to self
+                raise ValueError("User cannot sent kudos to themselves.")
+            
+            if self.sender.kudos_left <= 0: #check if user has kudos to give
+                raise ValueError(f"{self.sender.username} has no kudos left to give.")
+            
+            self.sender.kudos_left -= 1
+            self.sender.save()
 
         super().save(*args, **kwargs)
 

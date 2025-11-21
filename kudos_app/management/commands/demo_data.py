@@ -25,16 +25,6 @@ class Command(BaseCommand):
                     organization = org,
                     # kudos_left = randint(1,3),
                 ))
-
-        """ for _ in range(20):
-            sender = choice(users)
-            receiver = choice([u for u in users if u != sender])
-            message = fake.sentence(nb_words=10)
-            try:
-                Kudo.objects.create(sender=sender, receiver=receiver, message=message)
-            except Exception:
-                pass
-         """
         kudosCnt = 20
         for _ in range(kudosCnt):
             sender = choice(users)
@@ -44,6 +34,8 @@ class Command(BaseCommand):
             day = randint(0, 20)
             created_at = timezone.now() -timedelta(days=day)
 
-            Kudo.objects.create(sender=sender, receiver=receiver, message=message)
+            k = Kudo(sender=sender, receiver=receiver, message=message, created_at=created_at)
+            k.skip_kudos_validation = True
+            k.save()
         
         self.stdout.write(self.style.SUCCESS("Demo data loaded successfully"))
